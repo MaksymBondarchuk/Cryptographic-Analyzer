@@ -16,3 +16,15 @@ textarea {
     max-width: 280px;
 }
 
+
+.table-wrap {
+    width: 400px;
+    margin-bottom: 50px;
+    height: 300px;
+}
+
+.table-cell {
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}

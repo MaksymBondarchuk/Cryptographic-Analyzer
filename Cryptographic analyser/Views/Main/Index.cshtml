@@ -2,6 +2,37 @@
 @{
     ViewBag.Title = "Main page";
 }
+@model Cryptographic_analyser.Models.TablesGenerator
 
 <h2>MainView</h2>
 
+<div class="table-wrap">
+    @for (var i = 0; i < Model.Table.Count; i++)
+    {
+        for (var j = 0; j < Model.Table[i].Count; j++)
+        {
+            <div class="table-cell">
+                @Model.Table[i][j];
+            </div>
+        }
+        <br/>
+    }
+</div>
+
+<div class="table-wrap">
+    @for (var i = 0; i < Model.K.Count; i++)
+    {
+        <div class="table-cell">
+            @($"{Model.K[i],6:0.00}");
+        </div>
+    }
+</div>
+
+<div class="table-wrap">
+    @for (var i = 0; i < Model.M.Count; i++)
+    {
+        <div class="table-cell">
+            @($"{Model.M[i],6:0.00}");
+        </div>
+    }
+</div>
