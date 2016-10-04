@@ -137,3 +137,40 @@
         }
     </table>
 </div>
+
+<div id="Table 5" class="table-wrap">
+    <table>
+        <tr>
+            <td class="header-cell">Pe(m) - P(m)</td>
+            @for (var j = 0; j < Model.M.Count - 1; j++)
+            {
+                <td class="header-cell">M@(j + 1)</td>
+            }
+            <td class="header-cell">Sum</td>
+        </tr>
+
+        @for (var i = 0; i < Model.Table5.Count; i++)
+        {
+            <tr>
+                <td class="header-cell">E@(i + 1)</td>
+                @for (var j = 0; j < Model.Table5[i].Count - 1; j++)
+                {
+                    <td class="cell">
+                        <div class="table-cell">
+                            @($"{Model.Table5[i][j],6:0.00}")
+                        </div>
+                    </td>
+                }
+
+                @if (Math.Abs(Model.Table5[i].Last() - 0) < .009)
+                {
+                    <td class="sum-cell-good">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                }
+                else
+                {
+                    <td class="sum-cell-bad">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

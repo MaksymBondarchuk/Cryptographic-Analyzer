@@ -9,7 +9,6 @@ namespace Cryptographic_analyser.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Main
         public ActionResult Index()
         {
             var m = new TablesGenerator();
@@ -17,6 +16,7 @@ namespace Cryptographic_analyser.Controllers
             m.GenerateKorM(m.K, m.SizeK, true);
             m.GenerateF();
             m.GenerateTable4();
+            m.GenerateTable5();
 
             return View(m);
         }

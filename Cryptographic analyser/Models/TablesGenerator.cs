@@ -118,8 +118,6 @@ namespace Cryptographic_analyser.Models
                     result += K[i];
 
             return result;
-
-            //return K.Where((t, j) => F[j][m] == $"E{k + 1}").Sum();
         }
 
         private double Calculate113(int k)
@@ -136,16 +134,27 @@ namespace Cryptographic_analyser.Models
 
         public void GenerateTable4()
         {
-            Table4 = new List<List<double>>(SizeM);
+            Table4.Clear();
             for (var e = 0; e < SizeE; e++)
             {
                 Table4.Add(new List<double>());
 
                 for (var m = 0; m < SizeM; m++)
-                {
-                    Table4[e].Add(M[m] * Calculate112(m, e) / Calculate113(e));
-                }
+                    Table4[e].Add(M[m]*Calculate112(m, e)/Calculate113(e));
                 Table4[e].Add(Table4[e].Sum());
+            }
+        }
+
+        public void GenerateTable5()
+        {
+            Table5.Clear();
+            for (var e = 0; e < SizeE; e++)
+            {
+                Table5.Add(new List<double>());
+
+                for (var m = 0; m < SizeM; m++)
+                    Table5[e].Add(Table4[e][m] - M[m]);
+                Table5[e].Add(Table5[e].Sum());
             }
         }
     }
