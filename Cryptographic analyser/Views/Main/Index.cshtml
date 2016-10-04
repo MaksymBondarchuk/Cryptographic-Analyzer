@@ -4,35 +4,81 @@
 }
 @model Cryptographic_analyser.Models.TablesGenerator
 
-<h2>MainView</h2>
+<div id="Table 1" class="table-wrap">
+    <table>
+        <tr>
+            <td class="header-cell">f(m,k)</td>
+            @for (var j = 0; j < Model.Table.Count; j++)
+            {
+                <td class="header-cell">M@(j + 1)</td>
+            }
+        </tr>
 
-<div class="table-wrap">
-    @for (var i = 0; i < Model.Table.Count; i++)
-    {
-        for (var j = 0; j < Model.Table[i].Count; j++)
-        {
-            <div class="table-cell">
-                @Model.Table[i][j];
-            </div>
+        @for (var i = 0; i < Model.Table.Count; i++)
+            {
+            <tr>
+                <td class="header-cell">K@(i + 1)</td>
+                @for (var j = 0; j < Model.Table[i].Count; j++)
+                {
+                    <td class="cell">
+                        <div class="table-cell">
+                            @Model.Table[i][j]
+                        </div>
+                    </td>
+                }
+                @*<br />*@
+            </tr>
         }
-        <br/>
-    }
+    </table>
+
 </div>
 
-<div class="table-wrap">
-    @for (var i = 0; i < Model.K.Count; i++)
-    {
-        <div class="table-cell">
-            @($"{Model.K[i],6:0.00}");
-        </div>
-    }
+<div id="Table 2" class="table-wrap">
+    <table>
+        <tr>
+            <td class="header-cell">P(m)</td>
+            @for (var j = 0; j < Model.Table.Count; j++)
+            {
+                <td class="header-cell">M@(j + 1)</td>
+            }
+        </tr>
+
+        <tr>
+            <td class="header-cell">P</td>
+            @for (var i = 0; i < Model.K.Count; i++)
+            {
+                <td class="cell">
+                    <div class="table-cell">
+                        @($"{Model.K[i],6:0.00}")
+                    </div>
+
+                </td>
+            }
+        </tr>
+    </table>
 </div>
 
-<div class="table-wrap">
-    @for (var i = 0; i < Model.M.Count; i++)
-    {
-        <div class="table-cell">
-            @($"{Model.M[i],6:0.00}");
-        </div>
-    }
+<div id="Table 3" class="table-wrap">
+    <table>
+        <tr>
+            <td class="header-cell">P(k)</td>
+            @for (var j = 0; j < Model.Table.Count; j++)
+            {
+                <td class="header-cell">M@(j + 1)</td>
+            }
+        </tr>
+
+        <tr>
+            <td class="header-cell">P</td>
+            @for (var i = 0; i < Model.M.Count; i++)
+            {
+                <td class="cell">
+                    <div class="table-cell">
+                        @($"{Model.M[i],6:0.00}")
+                    </div>
+
+                </td>
+            }
+        </tr>
+    </table>
 </div>

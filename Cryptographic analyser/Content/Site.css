@@ -18,13 +18,33 @@ textarea {
 
 
 .table-wrap {
-    width: 400px;
+    /*width: 400px;*/
     margin-bottom: 50px;
-    height: 300px;
+    margin-right: auto;
+    margin-right: auto;
+    /*height: 300px;*/
 }
 
 .table-cell {
     display: inline-block;
     width: 50px;
     height: 25px;
+    /*border: 1px solid black;*/
+}
+
+.cell, .header-cell {
+    text-align: center;
+}
+
+.cell {
+    border: 1px solid black;
+}
+
+.header-cell {
+    border: 1px solid black;
+    background: lightgray;
+}
+
+table {
+    margin-top: 10px;
 }
