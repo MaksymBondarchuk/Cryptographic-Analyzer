@@ -174,3 +174,40 @@
         }
     </table>
 </div>
+
+<div id="Table 6" class="table-wrap">
+    <table>
+        <tr>
+            <td class="header-cell">Pe(k) / P(m)</td>
+            @for (var j = 0; j < Model.SizeE; j++)
+            {
+                <td class="header-cell">E@(j + 1)</td>
+            }
+            <td class="header-cell">Sum</td>
+        </tr>
+
+        @for (var i = 0; i < Model.Table6.Count; i++)
+        {
+            <tr>
+                <td class="header-cell">K@(i + 1)</td>
+                @for (var j = 0; j < Model.Table6[i].Count - 1; j++)
+                {
+                    <td class="cell">
+                        <div class="table-cell">
+                            @($"{Model.Table6[i][j],6:0.00}")
+                        </div>
+                    </td>
+                }
+
+                @if (Math.Abs(Model.Table6[i].Last() - 1) < .009)
+                {
+                    <td class="sum-cell-good">@($"{Model.Table6[i].Last(),6:0.00}")</td>
+                }
+                else
+                {
+                    <td class="sum-cell-bad">@($"{Model.Table6[i].Last(),6:0.00}")</td>
+                }
+            </tr>
+        }
+    </table>
+</div>

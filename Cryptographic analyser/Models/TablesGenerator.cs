@@ -109,24 +109,24 @@ namespace Cryptographic_analyser.Models
 
         }
 
-        private double Calculate112(int m, int k)
+        private double Calculate112(int m, int e)
         {
             var result = .0;
 
-            for (var i = 0; i < K.Count - 1; i++)
-                if (F[i][m] == $"E{k + 1}")
-                    result += K[i];
+            for (var k = 0; k < K.Count - 1; k++)
+                if (F[k][m] == $"E{e + 1}")
+                    result += K[k];
 
             return result;
         }
 
-        private double Calculate113(int k)
+        private double Calculate113(int e)
         {
             var result = .0;
 
             for (var i = 0; i < M.Count - 1; i++)
                 for (var j = 0; j < K.Count - 1; j++)
-                    if (F[i][j] == $"E{k + 1}")
+                    if (F[i][j] == $"E{e + 1}")
                         result += M[i] * K[j];
 
             return result;
@@ -155,6 +155,30 @@ namespace Cryptographic_analyser.Models
                 for (var m = 0; m < SizeM; m++)
                     Table5[e].Add(Table4[e][m] - M[m]);
                 Table5[e].Add(Table5[e].Sum());
+            }
+        }
+
+        private double Calculate116(int k, int e)
+        {
+            var result = .0;
+
+            for (var m = 0; m < M.Count - 1; m++)
+                if (F[k][m] == $"E{e + 1}")
+                    result += M[m];
+
+            return result;
+        }
+
+        public void GenerateTable6()
+        {
+            Table6.Clear();
+            for (var k = 0; k < SizeK; k++)
+            {
+                Table6.Add(new List<double>());
+
+                for (var e = 0; e < SizeE; e++)
+                    Table6[k].Add(K[k] * Calculate116(k, e) / Calculate113(e));
+                Table6[k].Add(Table6[k].Sum());
             }
         }
     }

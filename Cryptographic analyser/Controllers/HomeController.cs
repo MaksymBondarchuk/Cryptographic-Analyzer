@@ -17,6 +17,7 @@ namespace Cryptographic_analyser.Controllers
             m.GenerateF();
             m.GenerateTable4();
             m.GenerateTable5();
+            m.GenerateTable6();
 
             return View(m);
         }
