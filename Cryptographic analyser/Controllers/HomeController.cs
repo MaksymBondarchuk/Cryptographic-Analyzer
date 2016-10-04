@@ -11,7 +11,18 @@ namespace Cryptographic_analyser.Controllers
     {
         public ActionResult Index()
         {
-            var m = new TablesGenerator();
+            var m = new TablesGenerator
+            {
+                SizeM = 4,
+                SizeK = 13,
+                SizeE = 5
+            };
+            //var m = new TablesGenerator
+            //{
+            //    SizeM = 6,
+            //    SizeK = 6,
+            //    SizeE = 6
+            //};
             m.GenerateKorM(m.M, m.SizeM, false);
             m.GenerateKorM(m.K, m.SizeK, true);
             m.GenerateF();

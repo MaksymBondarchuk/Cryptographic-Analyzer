@@ -24,25 +24,37 @@ namespace Cryptographic_analyser.Models
 
         public void GenerateF()
         {
+            var eNumber = new List<int>();
+            for (var i = 0; i < SizeE; i++)
+                eNumber.Add(1);
+
+            for (var i = 0; i < SizeK - SizeM; i++)
+                eNumber[Random.Next(SizeE - 1)]++;
+
             int generated;
             do
             {
                 generated = 0;
-                F = new List<List<string>>(SizeM);
-                var rows = new List<List<string>>(SizeM);
-                var columns = new List<List<string>>(SizeM);
+                F = new List<List<string>>();
+                var rows = new List<List<string>>();
+                var columns = new List<List<string>>();
 
-                for (var i = 0; i < SizeM; i++)
+                for (var i = 0; i < SizeK; i++)
                 {
-                    rows.Add(new List<string>(SizeM));
-                    columns.Add(new List<string>(SizeM));
-                    F.Add(new List<string>(SizeM));
+                    rows.Add(new List<string>());
+                    F.Add(new List<string>());
                     for (var j = 0; j < SizeM; j++)
                     {
                         rows[i].Add(string.Empty);
-                        columns[i].Add(string.Empty);
                         F[i].Add(string.Empty);
                     }
+                }
+
+                for (var i = 0; i < SizeM; i++)
+                {
+                    columns.Add(new List<string>());
+                    for (var j = 0; j < SizeK; j++)
+                        columns[i].Add(string.Empty);
                 }
 
                 F[0][1] = M2K1;
@@ -53,34 +65,38 @@ namespace Cryptographic_analyser.Models
                 columns[2][1] = M3K2;
 
                 var globalBreak = false;
-                for (var i = 0; i < SizeM; i++)
+                for (var k = 0; k < SizeK; k++)
                 {
-                    for (var j = 0; j < SizeM; j++)
+                    for (var m = 0; m < SizeM; m++)
                     {
-                        if (i == 0 && j == 1 || i == 1 && j == 2)
+                        if (k == 0 && m == 1 || k == 1 && m == 2)
                             continue;
 
                         string value;
+                        int eIndex;
                         var tries = 0;
                         do
                         {
-                            value = $"E{Random.Next(1, SizeM + 1)}";
+                            eIndex = Random.Next(SizeE);
+                            value = $"E{eIndex + 1}";
                             tries++;
-                            if (tries == SizeM * 5)
+                            if (tries == SizeE * 5)
                             {
                                 globalBreak = true;
                                 break;
                             }
-                        } while (rows[i].Contains(value) || columns[j].Contains(value));
-                        rows[i][j] = value;
-                        columns[j][i] = value;
-                        F[i][j] = value;
+                            //} while (rows[i].Contains(value) || columns[j].Contains(value));
+                        } while (rows[k].Contains(value) ||
+                            eNumber[eIndex] <= columns[m].Count(t => t.Contains(value)));
+                        rows[k][m] = value;
+                        columns[m][k] = value;
+                        F[k][m] = value;
                         generated++;
                     }
                     if (globalBreak)
                         break;
                 }
-            } while (generated != SizeM * SizeM - 2);
+            } while (generated != SizeK * SizeM - 2);
         }
 
         public void GenerateKorM(List<double> table, int size, bool isRandom)
@@ -124,10 +140,10 @@ namespace Cryptographic_analyser.Models
         {
             var result = .0;
 
-            for (var i = 0; i < M.Count - 1; i++)
-                for (var j = 0; j < K.Count - 1; j++)
-                    if (F[i][j] == $"E{e + 1}")
-                        result += M[i] * K[j];
+            for (var k = 0; k < K.Count - 1; k++)
+                for (var m = 0; m < M.Count - 1; m++)
+                    if (F[k][m] == $"E{e + 1}")
+                        result += M[m] * K[k];
 
             return result;
         }
@@ -140,7 +156,7 @@ namespace Cryptographic_analyser.Models
                 Table4.Add(new List<double>());
 
                 for (var m = 0; m < SizeM; m++)
-                    Table4[e].Add(M[m]*Calculate112(m, e)/Calculate113(e));
+                    Table4[e].Add(M[m] * Calculate112(m, e) / Calculate113(e));
                 Table4[e].Add(Table4[e].Sum());
             }
         }
@@ -183,4 +199,3 @@ namespace Cryptographic_analyser.Models
         }
     }
 }
-
