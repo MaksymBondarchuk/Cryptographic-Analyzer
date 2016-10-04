@@ -8,7 +8,7 @@
     <table>
         <tr>
             <td class="header-cell">f(m,k)</td>
-            @for (var j = 0; j < Model.F.Count; j++)
+            @for (var j = 0; j < Model.SizeM; j++)
             {
             <td class="header-cell">M@(j + 1)</td>
             }
@@ -26,7 +26,6 @@
                     </div>
                 </td>
                 }
-            @*<br />*@
         </tr>
         }
     </table>

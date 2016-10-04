@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Cryptographic_analyser.Models
@@ -28,8 +29,13 @@ namespace Cryptographic_analyser.Models
             for (var i = 0; i < SizeE; i++)
                 eNumber.Add(1);
 
-            for (var i = 0; i < SizeK - SizeM; i++)
-                eNumber[Random.Next(SizeE - 1)]++;
+            var diff = SizeK - SizeM;
+            var idx = 0;
+            while (1 < diff)
+            {
+                eNumber[idx++ % SizeE]++;
+                diff--;
+            }
 
             int generated;
             do
@@ -41,8 +47,8 @@ namespace Cryptographic_analyser.Models
 
                 for (var i = 0; i < SizeK; i++)
                 {
-                    rows.Add(new List<string>());
                     F.Add(new List<string>());
+                    rows.Add(new List<string>());
                     for (var j = 0; j < SizeM; j++)
                     {
                         rows[i].Add(string.Empty);
@@ -85,18 +91,34 @@ namespace Cryptographic_analyser.Models
                                 globalBreak = true;
                                 break;
                             }
-                            //} while (rows[i].Contains(value) || columns[j].Contains(value));
                         } while (rows[k].Contains(value) ||
-                            eNumber[eIndex] <= columns[m].Count(t => t.Contains(value)));
+                            eNumber[eIndex] <= columns[m].Count(t => t == value));
                         rows[k][m] = value;
                         columns[m][k] = value;
                         F[k][m] = value;
                         generated++;
+                        if (k == SizeK - 1 && m == SizeM - 1)
+                        {
+                            var x = 0;
+                        }
                     }
                     if (globalBreak)
                         break;
                 }
             } while (generated != SizeK * SizeM - 2);
+        }
+
+        bool ChechF()
+        {
+            return false;
+        }
+
+        public void GenerateFv2()
+        {
+            do
+            {
+                var row = new List<double>();
+            } while (true);
         }
 
         public void GenerateKorM(List<double> table, int size, bool isRandom)
