@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cryptographic_analyser.Models
 {
@@ -8,58 +9,64 @@ namespace Cryptographic_analyser.Models
         public const string M2K1 = "E1";
         public const string M3K2 = "E2";
 
-        public const int Size = 6;
-        public List<List<string>> Table { get; set; } = new List<List<string>>();
+        public int SizeM { get; set; } = 6;
+        public int SizeK { get; set; } = 6;
+        public int SizeE { get; set; } = 6;
+        public List<List<string>> F { get; set; } = new List<List<string>>();
         public List<double> K { get; } = new List<double>();
         public List<double> M { get; } = new List<double>();
 
+        public List<List<double>> Table4 { get; set; } = new List<List<double>>();
+        public List<List<double>> Table5 { get; set; } = new List<List<double>>();
+        public List<List<double>> Table6 { get; set; } = new List<List<double>>();
+
         private Random Random { get; } = new Random();
 
-        public void Generate()
+        public void GenerateF()
         {
             int generated;
             do
             {
                 generated = 0;
-                Table = new List<List<string>>(Size);
-                var rows = new List<List<string>>(Size);
-                var columns = new List<List<string>>(Size);
+                F = new List<List<string>>(SizeM);
+                var rows = new List<List<string>>(SizeM);
+                var columns = new List<List<string>>(SizeM);
 
-                for (var i = 0; i < Size; i++)
+                for (var i = 0; i < SizeM; i++)
                 {
-                    rows.Add(new List<string>(Size));
-                    columns.Add(new List<string>(Size));
-                    Table.Add(new List<string>(Size));
-                    for (var j = 0; j < Size; j++)
+                    rows.Add(new List<string>(SizeM));
+                    columns.Add(new List<string>(SizeM));
+                    F.Add(new List<string>(SizeM));
+                    for (var j = 0; j < SizeM; j++)
                     {
                         rows[i].Add(string.Empty);
                         columns[i].Add(string.Empty);
-                        Table[i].Add(string.Empty);
+                        F[i].Add(string.Empty);
                     }
                 }
 
-                Table[0][1] = M2K1;
+                F[0][1] = M2K1;
                 rows[0][1] = M2K1;
                 columns[1][0] = M2K1;
-                Table[1][2] = M3K2;
+                F[1][2] = M3K2;
                 rows[1][2] = M3K2;
                 columns[2][1] = M3K2;
 
                 var globalBreak = false;
-                for (var i = 0; i < Size; i++)
+                for (var i = 0; i < SizeM; i++)
                 {
-                    for (var j = 0; j < Size; j++)
+                    for (var j = 0; j < SizeM; j++)
                     {
                         if (i == 0 && j == 1 || i == 1 && j == 2)
-                            continue; 
+                            continue;
 
                         string value;
                         var tries = 0;
                         do
                         {
-                            value = $"E{Random.Next(1, Size + 1)}";
+                            value = $"E{Random.Next(1, SizeM + 1)}";
                             tries++;
-                            if (tries == Size*5)
+                            if (tries == SizeM * 5)
                             {
                                 globalBreak = true;
                                 break;
@@ -67,33 +74,79 @@ namespace Cryptographic_analyser.Models
                         } while (rows[i].Contains(value) || columns[j].Contains(value));
                         rows[i][j] = value;
                         columns[j][i] = value;
-                        Table[i][j] = value;
+                        F[i][j] = value;
                         generated++;
                     }
                     if (globalBreak)
                         break;
                 }
-            } while (generated != Size * Size - 2);
+            } while (generated != SizeM * SizeM - 2);
         }
 
-        public void GenerateK()
+        public void GenerateKorM(List<double> table, int size, bool isRandom)
         {
-            var numbers = new List<int>(Size);
-            var sum = 0;
-            for (var i = 0; i < Size; i++)
+            table.Clear();
+            if (isRandom)
             {
-                numbers.Add(Random.Next(1, 100));
-                sum += numbers[i];
+                for (var i = 0; i < size; i++)
+                    table.Add(1.0 / size);
+                table.Add(table.Sum());
+            }
+            else
+            {
+                var numbers = new List<int>(size);
+                var sum = 0;
+                for (var i = 0; i < size; i++)
+                {
+                    numbers.Add(Random.Next(1, 100));
+                    sum += numbers[i];
+                }
+
+                for (var i = 0; i < size; i++)
+                    table.Add((double)numbers[i] / sum);
+                table.Add(table.Sum());
             }
 
-            for (var i = 0; i < Size; i++)
-                K.Add((double)numbers[i] / sum);
         }
 
-        public void GenerateM()
+        private double Calculate112(int m, int k)
         {
-            for (var i = 0; i < Size; i++)
-                M.Add(1.0 / Size);
+            var result = .0;
+
+            for (var i = 0; i < K.Count - 1; i++)
+                if (F[i][m] == $"E{k + 1}")
+                    result += K[i];
+
+            return result;
+
+            //return K.Where((t, j) => F[j][m] == $"E{k + 1}").Sum();
+        }
+
+        private double Calculate113(int k)
+        {
+            var result = .0;
+
+            for (var i = 0; i < M.Count - 1; i++)
+                for (var j = 0; j < K.Count - 1; j++)
+                    if (F[i][j] == $"E{k + 1}")
+                        result += M[i] * K[j];
+
+            return result;
+        }
+
+        public void GenerateTable4()
+        {
+            Table4 = new List<List<double>>(SizeM);
+            for (var e = 0; e < SizeE; e++)
+            {
+                Table4.Add(new List<double>());
+
+                for (var m = 0; m < SizeM; m++)
+                {
+                    Table4[e].Add(M[m] * Calculate112(m, e) / Calculate113(e));
+                }
+                Table4[e].Add(Table4[e].Sum());
+            }
         }
     }
 }

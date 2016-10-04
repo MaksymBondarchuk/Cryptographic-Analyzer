@@ -27,13 +27,13 @@ textarea {
 
 .table-cell {
     display: inline-block;
-    width: 50px;
     height: 25px;
     /*border: 1px solid black;*/
 }
 
-.cell, .header-cell {
+.cell, .header-cell, .sum-cell-good, .sum-cell-bad {
     text-align: center;
+    width: 50px;
 }
 
 .cell {
@@ -43,6 +43,16 @@ textarea {
 .header-cell {
     border: 1px solid black;
     background: lightgray;
+}
+
+.sum-cell-good {
+    border: 1px solid black;
+    background: lightgreen;
+}
+
+.sum-cell-bad {
+    border: 1px solid black;
+    background: lightcoral;
 }
 
 table {
