@@ -7,7 +7,7 @@ using Cryptographic_analyser.Models;
 
 namespace Cryptographic_analyser.Controllers
 {
-    public class MainController : Controller
+    public class HomeController : Controller
     {
         // GET: Main
         public ActionResult Index()
