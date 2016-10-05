@@ -100,6 +100,9 @@ namespace Cryptographic_analyser.Models
                             }
                         } while (rows[k].Contains(value) ||
                             eNumber[eIndex] <= columns[m].Count(t => t == value));
+                        if (globalBreak)
+                            break;
+
                         rows[k][m] = value;
                         columns[m][k] = value;
                         F[k][m] = value;
