@@ -213,9 +213,15 @@ namespace Cryptographic_analyser.Models
                 Table6.Add(new List<double>());
 
                 for (var e = 0; e < SizeE; e++)
-                    Table6[k].Add(K[k] * Calculate116(k, e) / Calculate113(e));
+                {
+                    // Find message
+                    var mIdx = F[k].IndexOf($"E{e + 1}");
+
+                    Table6[k].Add(mIdx == -1 ? 0 : K[k] * Calculate116(k, e) / Calculate113(e) / M[mIdx]);
+                }
                 Table6[k].Add(Table6[k].Sum());
             }
         }
     }
 }
+
