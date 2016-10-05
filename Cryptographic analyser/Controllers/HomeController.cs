@@ -9,17 +9,42 @@ namespace Cryptographic_analyser.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private bool ModeM { get; set; } = false;
+        private bool ModeK { get; set; } = true;
+
+        public ActionResult Index(string parameter)
         {
             var m = new TablesGenerator
             {
                 SizeM = 6,
                 SizeK = 6,
-                SizeE = 6
+                SizeE = 6,
+                ViewName = "Index"
             };
-            m.GenerateKorM(m.M, m.SizeM, false);
-            m.GenerateKorM(m.K, m.SizeK, true);
             m.GenerateF();
+            m.GenerateKorM(m.M, m.SizeM, ModeM);
+            m.GenerateKorM(m.K, m.SizeK, ModeK);
+
+            switch (parameter)
+            {
+                case "mEqual":
+                    ModeM = true;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "mRand":
+                    ModeM = false;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "kEqual":
+                    ModeK = true;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+                case "kRand":
+                    ModeK = false;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+            }
+
             m.GenerateTable4();
             m.GenerateTable5();
             m.GenerateTable6();
@@ -27,17 +52,39 @@ namespace Cryptographic_analyser.Controllers
             return View(m);
         }
 
-        public ActionResult Rectangle()
+        public ActionResult Rectangle(string parameter)
         {
             var m = new TablesGenerator
             {
                 SizeM = 7,
                 SizeK = 14,
-                SizeE = 7
+                SizeE = 7,
+                ViewName = "Rectangle"
             };
-            m.GenerateKorM(m.M, m.SizeM, false);
-            m.GenerateKorM(m.K, m.SizeK, true);
             m.GenerateF();
+            m.GenerateKorM(m.M, m.SizeM, ModeM);
+            m.GenerateKorM(m.K, m.SizeK, ModeK);
+
+            switch (parameter)
+            {
+                case "mEqual":
+                    ModeM = true;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "mRand":
+                    ModeM = false;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "kEqual":
+                    ModeK = true;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+                case "kRand":
+                    ModeK = false;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+            }
+
             m.GenerateTable4();
             m.GenerateTable5();
             m.GenerateTable6();
@@ -45,17 +92,39 @@ namespace Cryptographic_analyser.Controllers
             return View(m);
         }
 
-        public ActionResult EgM()
+        public ActionResult EgM(string parameter)
         {
             var m = new TablesGenerator
             {
                 SizeM = 4,
                 SizeK = 13,
-                SizeE = 5
+                SizeE = 5,
+                ViewName = "EgM"
             };
-            m.GenerateKorM(m.M, m.SizeM, false);
-            m.GenerateKorM(m.K, m.SizeK, true);
             m.GenerateF();
+            m.GenerateKorM(m.M, m.SizeM, ModeM);
+            m.GenerateKorM(m.K, m.SizeK, ModeK);
+
+            switch (parameter)
+            {
+                case "mEqual":
+                    ModeM = true;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "mRand":
+                    ModeM = false;
+                    m.GenerateKorM(m.M, m.SizeM, ModeM);
+                    break;
+                case "kEqual":
+                    ModeK = true;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+                case "kRand":
+                    ModeK = false;
+                    m.GenerateKorM(m.K, m.SizeK, ModeK);
+                    break;
+            }
+
             m.GenerateTable4();
             m.GenerateTable5();
             m.GenerateTable6();

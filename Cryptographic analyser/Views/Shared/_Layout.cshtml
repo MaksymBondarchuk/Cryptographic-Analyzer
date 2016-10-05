@@ -29,222 +29,228 @@
         </div>
     </div>
 
-<div class="container body-content">
-    @model Cryptographic_analyser.Models.TablesGenerator
+    <div class="container body-content">
+        @model Cryptographic_analyser.Models.TablesGenerator
 
-    <div id="Table 1" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">f(m,k)</td>
-                @for (var j = 0; j < Model.SizeM; j++)
-            {
-                    <td class="header-cell">M@(j + 1)</td>
-                }
-            </tr>
-
-            @for (var i = 0; i < Model.F.Count; i++)
-            {
+        <div id="Table 1" class="table-wrap">
+            <table>
                 <tr>
-                    <td class="header-cell">K@(i + 1)</td>
-                    @for (var j = 0; j < Model.F[i].Count; j++)
-                {
-                        <td class="cell">
-                            <div class="table-cell">
-                                @Model.F[i][j]
-                            </div>
-                        </td>
+                    <td class="header-cell">f(m,k)</td>
+                    @for (var j = 0; j < Model.SizeM; j++)
+            {
+                        <td class="header-cell">M@(j + 1)</td>
                     }
                 </tr>
-            }
-        </table>
-    </div>
 
-    <div id="Table 2" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">P(m)</td>
-                @for (var j = 0; j < Model.M.Count - 1; j++)
+                @for (var i = 0; i < Model.F.Count; i++)
             {
-                    <td class="header-cell">M@(j + 1)</td>
+                    <tr>
+                        <td class="header-cell">K@(i + 1)</td>
+                        @for (var j = 0; j < Model.F[i].Count; j++)
+                {
+                            <td class="cell">
+                                <div class="table-cell">
+                                    @Model.F[i][j]
+                                </div>
+                            </td>
+                        }
+                    </tr>
                 }
-                <td class="header-cell">Sum</td>
-            </tr>
+            </table>
+        </div>
 
-            <tr>
-                <td class="header-cell">P</td>
-                @for (var i = 0; i < Model.M.Count - 1; i++)
-            {
+        <div id="Table 2" class="table-wrap">
+            <table>
+                <tr>
+                    <td class="header-cell">P(m)</td>
+                    @for (var j = 0; j < Model.M.Count - 1; j++)
+                    {
+                    <td class="header-cell">M@(j + 1)</td>
+                    }
+                    <td class="header-cell">Sum</td>
+                </tr>
+
+                <tr>
+                    <td class="header-cell">P</td>
+                    @for (var i = 0; i < Model.M.Count - 1; i++)
+                    {
                     <td class="cell">
                         <div class="table-cell">
                             @($"{Model.M[i],6:0.00}")
                         </div>
                     </td>
-                }
+                    }
 
-                @if (Math.Abs(Model.M.Last() - 1) < .009)
-            {
+                    @if (Math.Abs(Model.M.Last() - 1) < .009)
+                    {
                     <td class="sum-cell-good">@($"{Model.M.Last(),6:0.00}")</td>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     <td class="sum-cell-bad">@($"{Model.M.Last(),6:0.00}")</td>
+                    }
+                </tr>
+            </table>
+            <div class="div-form">
+                @using (Html.BeginForm(Model.ViewName, "Home"))
+                {
+                    @Html.RadioButton("parameter", "mEqual") <span>Рівноймовірний режим</span>
+                    @Html.RadioButton("parameter", "mRand") <span>Bипадковий режим</span>
+                    <input type="submit" value="Згенерувати" />
                 }
-            </tr>
-        </table>
-    </div>
+            </div>
+        </div>
 
-    <div id="Table 3" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">P(k)</td>
-                @for (var j = 0; j < Model.K.Count - 1; j++)
-            {
+        <div id="Table 3" class="table-wrap">
+            <table>
+                <tr>
+                    <td class="header-cell">P(k)</td>
+                    @for (var j = 0; j < Model.K.Count - 1; j++)
+                    {
                     <td class="header-cell">K@(j + 1)</td>
-                }
-                <td class="header-cell">Sum</td>
-            </tr>
+                    }
+                    <td class="header-cell">Sum</td>
+                </tr>
 
-            <tr>
-                <td class="header-cell">P</td>
-                @for (var i = 0; i < Model.K.Count - 1; i++)
-            {
+                <tr>
+                    <td class="header-cell">P</td>
+                    @for (var i = 0; i < Model.K.Count - 1; i++)
+                    {
                     <td class="cell">
                         <div class="table-cell">
                             @($"{Model.K[i],6:0.00}")
                         </div>
 
                     </td>
-                }
+                    }
 
-                @if (Math.Abs(Model.K.Last() - 1) < .009)
-            {
+                    @if (Math.Abs(Model.K.Last() - 1) < .009)
+                    {
                     <td class="sum-cell-good">@($"{Model.K.Last(),6:0.00}")</td>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     <td class="sum-cell-bad">@($"{Model.K.Last(),6:0.00}")</td>
-                }
-            </tr>
-        </table>
-    </div>
-
-    <div id="Table 4" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">Pe(m)</td>
-                @for (var j = 0; j < Model.M.Count - 1; j++)
-            {
-                    <td class="header-cell">M@(j + 1)</td>
-                }
-                <td class="header-cell">Sum</td>
-            </tr>
-
-            @for (var i = 0; i < Model.Table4.Count; i++)
-            {
-                <tr>
-                    <td class="header-cell">E@(i + 1)</td>
-                    @for (var j = 0; j < Model.Table4[i].Count - 1; j++)
-                {
-                        <td class="cell">
-                            <div class="table-cell">
-                                @($"{Model.Table4[i][j],6:0.00}")
-                            </div>
-                        </td>
-                    }
-
-                    @if (Math.Abs(Model.Table4[i].Last() - 1) < .009)
-                {
-                        <td class="sum-cell-good">@($"{Model.Table4[i].Last(),6:0.00}")</td>
-                    }
-                    else
-                    {
-                        <td class="sum-cell-bad">@($"{Model.Table4[i].Last(),6:0.00}")</td>
                     }
                 </tr>
-            }
-        </table>
-    </div>
-
-    <div id="Table 5" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">Pe(m) - P(m)</td>
-                @for (var j = 0; j < Model.M.Count - 1; j++)
-            {
-                    <td class="header-cell">M@(j + 1)</td>
+            </table>
+            <div class="div-form">
+                @using (Html.BeginForm(Model.ViewName, "Home"))
+                {
+                    @Html.RadioButton("parameter", "kEqual") <span>Рівноймовірний режим</span>
+                    @Html.RadioButton("parameter", "kRand") <span>Bипадковий режим</span>
+                    <input type="submit" value="Згенерувати" />
                 }
-                <td class="header-cell">Sum</td>
-            </tr>
+            </div>
+        </div>
 
-            @for (var i = 0; i < Model.Table5.Count; i++)
-            {
+        <div id="Table 4" class="table-wrap">
+            <table>
                 <tr>
-                    <td class="header-cell">E@(i + 1)</td>
-                    @for (var j = 0; j < Model.Table5[i].Count - 1; j++)
-                {
-                        <td class="cell">
-                            <div class="table-cell">
-                                @($"{Model.Table5[i][j],6:0.00}")
-                            </div>
-                        </td>
+                    <td class="header-cell">Pe(m)</td>
+                    @for (var j = 0; j < Model.M.Count - 1; j++)
+            {
+                        <td class="header-cell">M@(j + 1)</td>
                     }
+                    <td class="header-cell">Sum</td>
+                </tr>
 
-                    @if (Math.Abs(Model.Table5[i].Last() - 0) < .009)
+                @for (var i = 0; i < Model.Table4.Count; i++)
+            {
+                    <tr>
+                        <td class="header-cell">E@(i + 1)</td>
+                        @for (var j = 0; j < Model.Table4[i].Count - 1; j++)
                 {
-                        <td class="sum-cell-good">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                            <td class="cell">
+                                <div class="table-cell">
+                                    @($"{Model.Table4[i][j],6:0.00}")
+                                </div>
+                            </td>
+                        }
+
+                        @if (Math.Abs(Model.Table4[i].Last() - 1) < .009)
+                {
+                            <td class="sum-cell-good">@($"{Model.Table4[i].Last(),6:0.00}")</td>
+                        }
+                        else
+                        {
+                            <td class="sum-cell-bad">@($"{Model.Table4[i].Last(),6:0.00}")</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div id="Table 5" class="table-wrap">
+            <table>
+                <tr>
+                    <td class="header-cell">Pe(m) - P(m)</td>
+                    @for (var j = 0; j < Model.M.Count - 1; j++)
+            {
+                        <td class="header-cell">M@(j + 1)</td>
                     }
-                    else
-                    {
-                        <td class="sum-cell-bad">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                    <td class="header-cell">Sum</td>
+                </tr>
+
+                @for (var i = 0; i < Model.Table5.Count; i++)
+            {
+                    <tr>
+                        <td class="header-cell">E@(i + 1)</td>
+                        @for (var j = 0; j < Model.Table5[i].Count - 1; j++)
+                {
+                            <td class="cell">
+                                <div class="table-cell">
+                                    @($"{Model.Table5[i][j],6:0.00}")
+                                </div>
+                            </td>
+                        }
+
+                        @if (Math.Abs(Model.Table5[i].Last() - 0) < .009)
+                {
+                            <td class="sum-cell-good">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                        }
+                        else
+                        {
+                            <td class="sum-cell-bad">@($"{Model.Table5[i].Last(),6:0.00}")</td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div id="Table 6" class="table-wrap">
+            <table>
+                <tr>
+                    <td class="header-cell">Pe(k) / P(m)</td>
+                    @for (var j = 0; j < Model.SizeE; j++)
+            {
+                        <td class="header-cell">E@(j + 1)</td>
                     }
                 </tr>
-            }
-        </table>
-    </div>
 
-    <div id="Table 6" class="table-wrap">
-        <table>
-            <tr>
-                <td class="header-cell">Pe(k) / P(m)</td>
-                @for (var j = 0; j < Model.SizeE; j++)
+                @for (var i = 0; i < Model.Table6.Count; i++)
             {
-                    <td class="header-cell">E@(j + 1)</td>
+                    <tr>
+                        <td class="header-cell">K@(i + 1)</td>
+                        @for (var j = 0; j < Model.Table6[i].Count - 1; j++)
+                {
+                            <td class="cell">
+                                <div class="table-cell">
+                                    @($"{Model.Table6[i][j],6:0.00}")
+                                </div>
+                            </td>
+                        }
+                    </tr>
                 }
-                <td class="header-cell">Sum</td>
-            </tr>
+            </table>
+        </div>
 
-            @for (var i = 0; i < Model.Table6.Count; i++)
-            {
-                <tr>
-                    <td class="header-cell">K@(i + 1)</td>
-                    @for (var j = 0; j < Model.Table6[i].Count - 1; j++)
-                {
-                        <td class="cell">
-                            <div class="table-cell">
-                                @($"{Model.Table6[i][j],6:0.00}")
-                            </div>
-                        </td>
-                    }
-
-                    @if (Math.Abs(Model.Table6[i].Last() - 1) < .009)
-                {
-                        <td class="sum-cell-good">@($"{Model.Table6[i].Last(),6:0.00}")</td>
-                    }
-                    else
-                    {
-                        <td class="sum-cell-bad">@($"{Model.Table6[i].Last(),6:0.00}")</td>
-                    }
-                </tr>
-            }
-        </table>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - M.Bondarchuk</p>
+        </footer>
     </div>
-
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - M.Bondarchuk</p>
-    </footer>
-</div>
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>

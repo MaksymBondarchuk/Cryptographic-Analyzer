@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Cryptographic_analyser.Models
 {
     public class TablesGenerator
     {
-        public const string M2K1 = "E1";
-        public const string M3K2 = "E2";
+        #region Constants: private
+        private const string M2K1 = "E1";
+        private const string M3K2 = "E2";
+        #endregion
 
+        #region Properties: public
         public int SizeM { get; set; } = 6;
         public int SizeK { get; set; } = 6;
         public int SizeE { get; set; } = 6;
-        public List<List<string>> F { get; set; } = new List<List<string>>();
+        public List<List<string>> F { get; private set; } = new List<List<string>>();
         public List<double> K { get; } = new List<double>();
         public List<double> M { get; } = new List<double>();
 
-        public List<List<double>> Table4 { get; set; } = new List<List<double>>();
-        public List<List<double>> Table5 { get; set; } = new List<List<double>>();
-        public List<List<double>> Table6 { get; set; } = new List<List<double>>();
+        public List<List<double>> Table4 { get; } = new List<List<double>>();
+        public List<List<double>> Table5 { get; } = new List<List<double>>();
+        public List<List<double>> Table6 { get; } = new List<List<double>>();
 
+        public string ViewName { get; set; }
+        #endregion
+
+        #region Properties: private
         private Random Random { get; } = new Random();
+        #endregion
 
         public void GenerateF()
         {
@@ -97,28 +104,11 @@ namespace Cryptographic_analyser.Models
                         columns[m][k] = value;
                         F[k][m] = value;
                         generated++;
-                        if (k == SizeK - 1 && m == SizeM - 1)
-                        {
-                            var x = 0;
-                        }
                     }
                     if (globalBreak)
                         break;
                 }
             } while (generated != SizeK * SizeM - 2);
-        }
-
-        bool ChechF()
-        {
-            return false;
-        }
-
-        public void GenerateFv2()
-        {
-            do
-            {
-                var row = new List<double>();
-            } while (true);
         }
 
         public void GenerateKorM(List<double> table, int size, bool isRandom)
