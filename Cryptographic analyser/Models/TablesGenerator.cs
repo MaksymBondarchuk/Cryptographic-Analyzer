@@ -29,9 +29,9 @@ namespace Cryptographic_analyser.Models
             for (var i = 0; i < SizeE; i++)
                 eNumber.Add(1);
 
-            var diff = SizeK - SizeM;
+            var diff = SizeK - SizeE;
             var idx = 0;
-            while (1 < diff)
+            while (0 < diff)
             {
                 eNumber[idx++ % SizeE]++;
                 diff--;
@@ -161,12 +161,10 @@ namespace Cryptographic_analyser.Models
         private double Calculate113(int e)
         {
             var result = .0;
-
-            for (var k = 0; k < K.Count - 1; k++)
-                for (var m = 0; m < M.Count - 1; m++)
+            for (var k = 0; k < SizeK; k++)
+                for (var m = 0; m < SizeM; m++)
                     if (F[k][m] == $"E{e + 1}")
                         result += M[m] * K[k];
-
             return result;
         }
 
