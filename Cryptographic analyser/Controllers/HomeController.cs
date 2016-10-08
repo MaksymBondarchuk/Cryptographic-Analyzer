@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Cryptographic_analyser.Models;
+﻿using System.Web.Mvc;
+using Cryptographic_Analyzer.Models;
 
-namespace Cryptographic_analyser.Controllers
+namespace Cryptographic_Analyzer.Controllers
 {
     public class HomeController : Controller
     {
-        private bool ModeM { get; set; } = false;
+        private bool ModeM { get; set; }
         private bool ModeK { get; set; } = true;
 
-        public void DoCommonStuff(ref TablesGenerator m, string parameter)
+        private void DoCommonStuff(ref TablesGenerator m, string parameter)
         {
             m.GenerateF();
             m.GenerateKorM(m.M, m.SizeM, ModeM);

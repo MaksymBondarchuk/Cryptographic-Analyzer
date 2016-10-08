@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cryptographic_analyser.Models
+namespace Cryptographic_Analyzer.Models
 {
     public class TablesGenerator
     {
